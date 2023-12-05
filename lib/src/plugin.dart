@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:isolate';
 import 'dart:ui';
 import 'dart:async';
@@ -16,10 +15,10 @@ class NotificationsListener {
   static const SEND_PORT_NAME = "notifications_send_port";
 
   static const MethodChannel _methodChannel =
-      const MethodChannel('$CHANNELID/method');
+  const MethodChannel('$CHANNELID/method');
 
   static const MethodChannel _bgMethodChannel =
-      const MethodChannel('$CHANNELID/bg_method');
+  const MethodChannel('$CHANNELID/bg_method');
 
   static MethodChannel get bgMethodChannel => _bgMethodChannel;
 
@@ -52,7 +51,7 @@ class NotificationsListener {
     EventCallbackFunc callbackHandle = _defaultCallbackHandle,
   }) async {
     final CallbackHandle _callbackDispatch =
-        PluginUtilities.getCallbackHandle(callbackDispatcher)!;
+    PluginUtilities.getCallbackHandle(callbackDispatcher)!;
     await _methodChannel.invokeMethod(
         'plugin.initialize', _callbackDispatch.toRawHandle());
 
@@ -68,7 +67,7 @@ class NotificationsListener {
   /// Register a new event handler
   static Future<void> registerEventHandle(EventCallbackFunc callback) async {
     final CallbackHandle _callback =
-        PluginUtilities.getCallbackHandle(callback)!;
+    PluginUtilities.getCallbackHandle(callback)!;
     await _methodChannel.invokeMethod(
         'plugin.registerEventHandle', _callback.toRawHandle());
   }
@@ -105,11 +104,11 @@ class NotificationsListener {
 
   /// promote the service to foreground
   static Future<void> promoteToForeground(
-    String title, {
-    String subTitle = "",
-    bool showWhen = false,
-    String description = "Service is running",
-  }) async {
+      String title, {
+        String subTitle = "",
+        bool showWhen = false,
+        String description = "Service is running",
+      }) async {
     var data = {};
     data["foreground"] = true;
     data["subTitle"] = subTitle;
@@ -135,7 +134,7 @@ class NotificationsListener {
   /// use the index to locate the action
   static Future<bool> tapNotificationAction(String uid, int actionId) async {
     return await _bgMethodChannel
-            .invokeMethod<bool>('service.tap_action', [uid, actionId]) ??
+        .invokeMethod<bool>('service.tap_action', [uid, actionId]) ??
         false;
   }
 
@@ -144,7 +143,7 @@ class NotificationsListener {
   static Future<bool> postActionInputs(
       String uid, int actionId, Map<String, dynamic> map) async {
     return await _bgMethodChannel
-            .invokeMethod<bool>("service.send_input", [uid, actionId, map]) ??
+        .invokeMethod<bool>("service.send_input", [uid, actionId, map]) ??
         false;
   }
 
@@ -165,7 +164,7 @@ class NotificationsListener {
 }
 
 /// callbackDispatcher use to install background channel
-void callbackDispatcher({inited: true}) {
+void callbackDispatcher({inited = true}) {
   WidgetsFlutterBinding.ensureInitialized();
 
   NotificationsListener._bgMethodChannel
